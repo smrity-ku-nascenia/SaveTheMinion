@@ -75,7 +75,7 @@ def message_display(text):
 
 def crash():
     button("Play Again", (display_width / 2 - 25), (display_height / 2), 100, 40, black, black, game_loop)
-    message_display('You Crashed')
+    message_display('Crashed !!!')
 
 
 def game_loop():
@@ -114,10 +114,10 @@ def game_loop():
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                     x_change = 0
 
-            if crashed == 1:
-                x_change = 0
-
-        x += x_change
+            # if crashed == 1:
+            #     x_change = 0
+        if crashed == 0:
+            x += x_change
         gameDisplay.fill(white)
 
         things(thing_start_x, thing_start_y, thing_width, thing_height, red)
