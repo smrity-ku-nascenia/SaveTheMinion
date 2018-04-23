@@ -13,7 +13,7 @@ black = (0, 0, 0)
 white = (255, 255, 255)
 red = (255, 0, 0)
 
-minion_width = 73
+car_width = 73
 
 gameDisplay = pygame.display.set_mode((display_width, display_height))
 pygame.display.set_caption('Save The Minion!!!')
@@ -33,8 +33,8 @@ def things(thing_x, thing_y, thing_w, thing_h, color):
     pygame.draw.rect(gameDisplay, color, [thing_x, thing_y, thing_w, thing_h])
 
 
-def minion(x, y, minion_img):
-    gameDisplay.blit(minion_img, (x, y))
+def car(x, y, car_img):
+    gameDisplay.blit(car_img, (x, y))
 
 
 def button(msg, x, y, w, h, ic, ac, action=None):
@@ -114,6 +114,8 @@ def game_loop():
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                     x_change = 0
 
+            # if crashed == 1:
+            #     x_change = 0
         if crashed == 0:
             x += x_change
         gameDisplay.fill(white)
@@ -122,10 +124,10 @@ def game_loop():
         if crashed == 0:
             thing_start_y += thing_speed
             image = minionImg
-        minion(x, y, image)
+        car(x, y, image)
         things_dodged(dodged)
 
-        if x > display_width - minion_width or x < 0:
+        if x > display_width - car_width or x < 0:
             crashed = 1
             image = minionImg_crushed
             crash()
@@ -133,11 +135,11 @@ def game_loop():
         if thing_start_y > display_height:
             thing_start_y = 0 - thing_height
             thing_start_x = random.randrange(0, display_width)
-            dodged += 2
+            dodged += 1
             thing_speed += 0.5
 
         if y < thing_start_y + thing_height:
-            if ((x > thing_start_x) and x < (thing_start_x + thing_width)) or (x + minion_width > (thing_start_x) and (x + minion_width) < (thing_start_x + thing_width)) or x == thing_start_x:
+            if ((x > thing_start_x) and x < (thing_start_x + thing_width)) or (x + car_width > (thing_start_x) and (x + car_width) < (thing_start_x + thing_width)) or x == thing_start_x:
                 crashed = 1
                 image = minionImg_crushed
                 crash()
