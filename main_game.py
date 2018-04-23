@@ -1,6 +1,7 @@
 import pygame
 import os
 import random
+import time
 
 pygame.init()
 
@@ -15,11 +16,11 @@ red = (255, 0, 0)
 car_width = 73
 
 gameDisplay = pygame.display.set_mode((display_width, display_height))
-pygame.display.set_caption('Racing Game')
+pygame.display.set_caption('Save The Minion!!!')
 clock = pygame.time.Clock()
 
-carImg = pygame.image.load('minion.png')
-carImg_crushed = pygame.image.load('minion_crashed.png')
+minionImg = pygame.image.load('minion.png')
+minionImg_crushed = pygame.image.load('minion_crashed.png')
 
 
 def things_dodged(count):
@@ -94,23 +95,27 @@ def game_loop():
     dodged = 0
 
     game_exit = False
-    image = carImg
+    image = minionImg
 
     while not game_exit:
 
         for event in pygame.event.get():
+
             if event.type == pygame.QUIT:
                 game_exit = True
 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT and crashed == 0:
+            if event.type == pygame.KEYDOWN and crashed == 0:
+                if event.key == pygame.K_LEFT:
                     x_change = -6
-                if event.key == pygame.K_RIGHT and crashed == 0:
+                if event.key == pygame.K_RIGHT:
                     x_change = 6
 
-            if event.type == pygame.KEYUP:
+            if event.type == pygame.KEYUP and crashed == 0:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                     x_change = 0
+
+            if crashed == 1:
+                x_change = 0
 
         x += x_change
         gameDisplay.fill(white)
@@ -118,13 +123,13 @@ def game_loop():
         things(thing_start_x, thing_start_y, thing_width, thing_height, red)
         if crashed == 0:
             thing_start_y += thing_speed
-            image = carImg
+            image = minionImg
         car(x, y, image)
         things_dodged(dodged)
 
         if x > display_width - car_width or x < 0:
             crashed = 1
-            image = carImg_crushed
+            image = minionImg_crushed
             crash()
 
         if thing_start_y > display_height:
@@ -136,7 +141,7 @@ def game_loop():
         if y < thing_start_y + thing_height:
             if ((x > thing_start_x) and x < (thing_start_x + thing_width)) or (x + car_width > (thing_start_x) and (x + car_width) < (thing_start_x + thing_width)) or x == thing_start_x:
                 crashed = 1
-                image = carImg_crushed
+                image = minionImg_crushed
                 crash()
 
         pygame.display.update()
